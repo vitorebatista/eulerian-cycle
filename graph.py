@@ -40,9 +40,9 @@ class Graph:
             self.adjacent[nPos1].append( i[1] )
             self.adjacent[nPos2].append( i[0] )
 
-    def importFromTxt(self):
+    def importFile(self, fileDir):
         nLine = 0
-        with open('./data/graph.csv', newline='') as inputfile:
+        with open(fileDir, newline='') as inputfile:
             for row in csv.reader(inputfile):
                 nLine += 1
                 if (nLine == 1): # na primeira linha encontra todos os vertices

@@ -1,7 +1,7 @@
 from graph import Graph
 
 grafo = Graph()
-grafo.importFromTxt()
+grafo.importFile('./data/graph.csv')
 isConnected = grafo.isConnected()
 isPair = grafo.isAllPair()
 grafo.Hierholzer()
