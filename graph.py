@@ -7,6 +7,12 @@
 # 4 - procurar o ciclo euleriano (não é caminho euleriano)
 # 5 - dar a complexidade da implementação dos itens 2, 3 e 4
 
+# grafo = Grafo() -> ok
+# grafo.importFromTxt() -> ok
+# isConnected = grafo.isConnected() -> ok
+# isPair = grafo.isAllPair() -> ok
+# grafo.Hierholzer() -> aqui o bixo pega
+
 import csv
 
 class Grafo:
@@ -36,7 +42,7 @@ class Grafo:
 
     def importFromTxt(self):
         nLine = 0
-        with open('./graphs-exercise/graph-content.txt', newline='') as inputfile:
+        with open('./data/graph.csv', newline='') as inputfile:
             for row in csv.reader(inputfile):
                 nLine += 1
                 if (nLine == 1): # na primeira linha encontra todos os vertices
