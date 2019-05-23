@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Exercício utilizando grafos
 # Objetivo: verificar se o grafo tem ciclo euleriano e qual é o ciclo
 # 1 - montar um grafo simples não direcionado
@@ -38,10 +39,10 @@ class Grafo:
         with open('./graphs-exercise/graph-content.txt', newline='') as inputfile:
             for row in csv.reader(inputfile):
                 nLine += 1
-                if (nLine == 1): #na primeira linha encontra todos os vertices
+                if (nLine == 1): # na primeira linha encontra todos os vertices
                     for i in row:
                         self.newVertice( int(i) )
-                else: #nas demais linhas encontra as arestas
+                else: # nas demais linhas encontra as arestas
                     self.newAresta( int(row[0]), int(row[1]) )
         self.montaAdjacentes()
 
