@@ -71,7 +71,7 @@ class Graph:
 
 
 
-
+    # passa o valor dos vértices v1 e v2 e retorna o índice da aresta em self.arestas
     def getArestaPosition(self,v1,v2):
         nPos = self.arestas.count([v1,v2])
         if nPos == 0:
@@ -80,23 +80,27 @@ class Graph:
             nPos = self.arestas.index([v1,v2])
         return nPos
 
+    # passa o valor dos vérticies v1 e v2 e marca aresta como visitada em self.visitedArestas
     def markArestaAsVisited(self,v1,v2):
         nPos = self.getArestaPosition(v1,v2)
         self.visitedArestas[nPos] = 1
         return nPos
 
+    # passa o valor dos vértices v1 e v2 e verifica se a aresta já foi visitada
     def alreadyVisitedAresta(self,v1,v2):
         nPos = self.getArestaPosition(v1,v2)
         return (self.visitedArestas[nPos] == 1)
 
-    def getNextVertexIndex(self,u):
-        v1 = self.vertices[u]
-        for v2 in self.adjacent[u]:
+    # retorna o próximo vértice que pode visitar a partir de um vértice de origem (índice)
+    def getNextVertexIndex(self,vIdx):
+        v1 = self.vertices[vIdx]
+        for v2 in self.adjacent[vIdx]:
             if not self.alreadyVisitedAresta(v1,v2):
                 self.markArestaAsVisited(v1,v2)
                 break
         return self.vertices.index(v2)
     
+    # procura o próxima vértice que tem uma aresta não visitada, dentro de uma lista incremental (tour)
     def getNextVertexWithUnvisitedEdge(self,tour):
         nIndex = -1
         for i in tour:
@@ -115,38 +119,39 @@ class Graph:
         return self.vertices.index(nIndex)
 
 
+    def depth_search_subcycle(self,vIndex):
+        tour = [] # armazena o tour completo
+        subtour = [] # armazena o subciclo
 
-    def depth_search_subcycle(self,vIndex): # recebe o index do vertice a fazer a busca em profundidade
-        
-        tour = []
-        subtour = []
+        #inicia com um vértice aleatório, digamos
+        vStartIdx = vIndex
+        tour.append(self.vertices[vStartIdx]) # adiciona o valor do vértice ao circuito de controle
+        self.eulerCycle.append(self.vertices[vStartIdx]) # adiciona o valor do vértice ao circuito final
 
-        startidx = vIndex
-        tour.append(self.vertices[startidx])
-        self.eulerCycle.append(self.vertices[startidx])
-
+        #percorre o grafo até que todos os vértices tenham sido visitados
         while True:
 
-            #if nLoop == 0:
-            currentidx = startidx
-            #else:
-            currentidx = self.getNextVertexWithUnvisitedEdge(tour)
-            if currentidx < 0:
-                    break
-            startidx = currentidx
-           # nLoop += 1
-
-            subtour.append( self.vertices[currentidx] )
+            #da lista de vértices já percorridos, retorna o que ainda tem alguma aresta a visitar
+            vCurrentIdx = self.getNextVertexWithUnvisitedEdge(tour)
+            #se não houver, encerra a busca pois o ciclo está pronto
+            if vCurrentIdx < 0:
+                break
+            
+            vStartIdx = vCurrentIdx
+            subtour.append( self.vertices[vCurrentIdx] )
 
             while True:
-                uidx = self.getNextVertexIndex( currentidx )
+                uidx = self.getNextVertexIndex( vCurrentIdx )
                 subtour.append( self.vertices[uidx] )
-                currentidx = uidx
-                if (startidx == currentidx):
+                vCurrentIdx = uidx
+                if (vStartIdx == vCurrentIdx):
                     break
+
             for i in subtour:
                 tour.append(i)
 
+            # faz a aglutinação dos subciclos no ciclo de euler
+            # troca o vértice isolado pela nova subsequência 
             nPos = self.eulerCycle.index( subtour[0] )
             self.eulerCycle.pop( nPos )
             for i in subtour:
@@ -154,15 +159,11 @@ class Graph:
                 nPos += 1
 
             subtour.clear()
-
-        a = 10
         
 
 
-
-
-    def Hierholzer(self): #funcao para identificar circuito euleriano
-        self.depth_search_subcycle(5)
+    def Hierholzer(self,nStart): #funcao para identificar circuito euleriano
+        self.depth_search_subcycle(nStart) 
 
 
 
