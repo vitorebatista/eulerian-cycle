@@ -69,6 +69,9 @@ class Graph:
         return True
 
 
+
+
+
     def getArestaPosition(self,v1,v2):
         nPos = self.arestas.count([v1,v2])
         if nPos == 0:
@@ -77,58 +80,89 @@ class Graph:
             nPos = self.arestas.index([v1,v2])
         return nPos
 
+    def markArestaAsVisited(self,v1,v2):
+        nPos = self.getArestaPosition(v1,v2)
+        self.visitedArestas[nPos] = 1
+        return nPos
+
     def alreadyVisitedAresta(self,v1,v2):
         nPos = self.getArestaPosition(v1,v2)
         return (self.visitedArestas[nPos] == 1)
 
-    def depth_search_subcycle(self,vIndex,startV): # recebe o index do vertice a fazer a busca em profundidade
+    def getNextVertexIndex(self,u):
+        v1 = self.vertices[u]
+        for v2 in self.adjacent[u]:
+            if not self.alreadyVisitedAresta(v1,v2):
+                self.markArestaAsVisited(v1,v2)
+                break
+        return self.vertices.index(v2)
+    
+    def getNextVertexWithUnvisitedEdge(self,tour):
+        nIndex = -1
+        for i in tour:
+            if nIndex < 0:
+                for j in self.adjacent[self.vertices.index(i)]:
+                    if not self.alreadyVisitedAresta(i,j):
+                        nIndex = self.getArestaPosition(i,j)
+                        break
+                if nIndex >= 0:
+                    for m in self.arestas[nIndex]:
+                        if m == i:
+                            nIndex = m
+                            break
+        if nIndex < 0:
+            return nIndex
+        return self.vertices.index(nIndex)
+
+
+
+    def depth_search_subcycle(self,vIndex): # recebe o index do vertice a fazer a busca em profundidade
         
-        # busca o menor subgrafo possível retornando ao vértice de origem (startV)
+        tour = []
+        subtour = []
 
-        # adiciona esse menor subgrafo no eulerCycle
+        startidx = vIndex
+        tour.append(self.vertices[startidx])
+        self.eulerCycle.append(self.vertices[startidx])
 
-        # para os demais vertices, busca o menor subgrafo possível, retornando à origem (startV)
+        while True:
+
+            #if nLoop == 0:
+            currentidx = startidx
+            #else:
+            currentidx = self.getNextVertexWithUnvisitedEdge(tour)
+            if currentidx < 0:
+                    break
+            startidx = currentidx
+           # nLoop += 1
+
+            subtour.append( self.vertices[currentidx] )
+
+            while True:
+                uidx = self.getNextVertexIndex( currentidx )
+                subtour.append( self.vertices[uidx] )
+                currentidx = uidx
+                if (startidx == currentidx):
+                    break
+            for i in subtour:
+                tour.append(i)
+
+            nPos = self.eulerCycle.index( subtour[0] )
+            self.eulerCycle.pop( nPos )
+            for i in subtour:
+                self.eulerCycle.insert(nPos,i)
+                nPos += 1
+
+            subtour.clear()
+
+        a = 10
         
-        # adiciona no eulerCycle (no meio) 
-
-
-        #ref https://www.youtube.com/watch?v=9dXQOMNptM8
-
-        v1 = self.vertices[vIndex]
-
-        if (vIndex != startV):
-            try:
-                lFound = False
-                lFound = self.adjacent[vIndex].index( self.vertices[startV]) #compara para saber se é o menor subciclo
-            except:
-                print(x)
-
-            if lFound:
-                # fim do subciclo, recomeca
-                print('fim do subciclo')
-            else:
-                # vai voltar, entao força o próximo vértice
-                print('x')
-
-
-        for adj in self.adjacent[ vIndex ]: # para cada vértice adjacente (busca pelo índice)
-            v2 = adj
-            nPos = self.getArestaPosition(v1,v2)
-            if not (self.alreadyVisitedAresta(v1,v2)): # verifica se ainda não foi visitado
-                self.visitedArestas[nPos] = 1
-                self.eulerCycle.append(v1)
-                self.depth_search_subcycle( self.vertices.index(adj),startV ) # busca nos vertices ligados, passando o index
-            else:
-                if (vIndex == startV):
-                    self.eulerCycle.append(v1)
-
-
 
 
 
 
     def Hierholzer(self): #funcao para identificar circuito euleriano
-        self.depth_search_subcycle(0,0)
+        self.depth_search_subcycle(5)
 
 
 
