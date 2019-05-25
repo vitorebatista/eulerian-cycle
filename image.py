@@ -10,6 +10,6 @@ def image(graph):
     print("Edges of graph: ")
     print(G.edges())
 
-    nx.draw(G)
+    nx.draw(G, node_size = 800, node_color="red", with_labels = True)
     plt.savefig(graph.getFile().replace('graph','png'))
-    plt.show() # display
+    plt.show()
