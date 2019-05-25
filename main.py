@@ -11,12 +11,15 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.importFile('./data/5.graph')
-G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
+G.importFile('./data/9.graph')
+isConnected = G.isConnected()
+isAllPair = G.isAllPair()
+if (isConnected and isAllPair):
+    G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
 
 print("\n---------------------------------------------------")
-print("Grafo conexo? %r" % G.isConnected())
-print("Cada vertice tem número par de arestas? %r" % G.isAllPair())
+print("Grafo conexo? %r" % isConnected)
+print("Cada vertice tem número par de arestas? %r" % isAllPair)
 print("Vértices %r" % G.getVertices())
 print("Adjacenes %r" % G.getAdjacent())
 print("Arestas %r" % G.getEdges())
