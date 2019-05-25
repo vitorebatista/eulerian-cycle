@@ -5,25 +5,26 @@ Referências:
 
     http://www.professeurs.polymtl.ca/michel.gagnon/Disciplinas/Bac/Grafos/Busca/busca.html#Prof
     https://paginas.fe.up.pt/~rossetti/rrwiki/lib/exe/fetch.php?media=teaching:1011:cal:08_2.09_1.grafos6.pdf
+    https://www.python-course.eu/graphs_python.php
 """
 
 from graph import Graph
 from image import image
 
 G = Graph()
-G.importFile('./data/9.graph')
-isConnected = G.isConnected()
-isAllPair = G.isAllPair()
+G.import_file('./data/2.graph')
+isConnected = G.is_connected()
+isAllPair = G.is_all_pair()
 if (isConnected and isAllPair):
-    G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
+    G.Hierholzer(3)  # enviar índice do vértice inicial (deveria ser opcional)
 
 print("\n---------------------------------------------------")
 print("Grafo conexo? %r" % isConnected)
 print("Cada vertice tem número par de arestas? %r" % isAllPair)
-print("Vértices %r" % G.getVertices())
-print("Adjacenes %r" % G.getAdjacent())
-print("Arestas %r" % G.getEdges())
-print("Euler Cycle: %r" % G.getEulerCycle())
+print("Vértices %r" % G.get_vertices())
+print("Adjacenes %r" % G.get_adjacent())
+print("Arestas %r" % G.get_edges())
+print("Euler Cycle: %r" % G.get_euler_cycle())
 print("---------------------------------------------------\n",)
 
 # Abre imagem conforme estrutura da classe Graph

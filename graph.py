@@ -20,38 +20,39 @@ class Graph:
         self.eulerCycle = []
         self.file = ""
 
-    def getVertices(self):
+    def get_vertices(self):
         return self.vertices
 
-    def getAdjacent(self):
+    def get_adjacent(self):
         return self.adjacent
 
-    def getEdges(self):
+    def get_edges(self):
         return self.edges
 
-    def getEulerCycle(self):
+    def get_euler_cycle(self):
         return self.eulerCycle
 
-    def getFile(self):
+    def image_file(self):
         return self.file
 
-    def addVertex(self, ident):
+    def add_vertex(self, ident):
         self.vertices.append(ident)
         self.visitedVertices.append(0)
         self.adjacent.append([])
 
-    def addEdge(self, v1, v2):
+    def add_edge(self, v1, v2):
+        """ Adiciona a lista de arestas"""
         self.edges.append([v1, v2])
         self.visitedEdges.append(0)
 
-    def createAdjacencyList(self):
+    def __create_adjacency_list(self):
         for edge in self.edges:
             v1 = self.vertices.index(edge[0])
             v2 = self.vertices.index(edge[1])
             self.adjacent[v1].append(edge[1])
             self.adjacent[v2].append(edge[0])
 
-    def importFile(self, file):
+    def import_file(self, file):
         self.file = file
         line = 0
         with open(file, newline='') as inputfile:
@@ -59,38 +60,38 @@ class Graph:
                 line += 1
                 if (line == 1):  # na primeira linha encontra todos os vertices
                     for i in row:
-                        self.addVertex(int(i))
+                        self.add_vertex(int(i))
                 else:  # nas demais linhas encontra as arestas (edges)
-                    self.addEdge(int(row[0]), int(row[1]))
-        self.createAdjacencyList()
+                    self.add_edge(int(row[0]), int(row[1]))
+        self.__create_adjacency_list()
 
-    def depth_search(self, vIndex):
+    def __depth_search(self, index):
         """ Recebe o index do vertice a fazer a busca em profundidade """
 
         # marca vertice como visitado (pelo seu indice)
-        self.visitedVertices[vIndex] = 1
+        self.visitedVertices[index] = 1
         # para cada vértice adjacente (busca pelo índice)
-        for adj in self.adjacent[vIndex]:
+        for adj in self.adjacent[index]:
             # verifica se ainda não foi visitado
             if (self.visitedVertices[self.vertices.index(adj)] == 0):
                 # busca nos vertices ligados, passando o index
-                self.depth_search(self.vertices.index(adj))
+                self.__depth_search(self.vertices.index(adj))
 
-    def isConnected(self):
+    def is_connected(self):
         """verifica se grafo é conexo"""
         # busca nos vertices ligados, passando o index de um elemento qualquer
-        self.depth_search(0)
+        self.__depth_search(0)
         # verifica se algum vertice nao foi visitado após a busca
         return (self.visitedVertices.count(0) == 0)
 
-    def isAllPair(self):
+    def is_all_pair(self):
         """verifica se todos os vertices tem grau par"""
         for i in self.adjacent:
             if (len(i) % 2) > 0:
                 return False
         return True
 
-    def findEdge(self, v1, v2):
+    def find_edge(self, v1, v2):
         """passa o valor dos vértices v1 e v2 e retorna o índice da aresta em self.edges"""
         nPos = self.edges.count([v1, v2])
         if nPos == 0:
@@ -99,45 +100,45 @@ class Graph:
             nPos = self.edges.index([v1, v2])
         return nPos
 
-    def markEdgeAsVisited(self, v1, v2):
+    def __mark_edge_as_visited(self, v1, v2):
         """passa o valor dos vérticies v1 e v2 e marca aresta como visitada em self.visitedEdges"""
-        nPos = self.findEdge(v1, v2)
+        nPos = self.find_edge(v1, v2)
         self.visitedEdges[nPos] = 1
         return nPos
 
-    def alreadyVisitedEdge(self, v1, v2):
+    def __already_visited_edge(self, v1, v2):
         """passa o valor dos vértices v1 e v2 e verifica se a aresta já foi visitada"""
-        nPos = self.findEdge(v1, v2)
+        nPos = self.find_edge(v1, v2)
         return (self.visitedEdges[nPos] == 1)
 
-    def getNextVertexIndex(self, vIdx):
+    def __get_next_vertex_index(self, vIdx):
         """retorna o próximo vértice que pode visitar a partir de um vértice de origem (índice)"""
         v1 = self.vertices[vIdx]
         for v2 in self.adjacent[vIdx]:
-            if not self.alreadyVisitedEdge(v1, v2):
-                self.markEdgeAsVisited(v1, v2)
+            if not self.__already_visited_edge(v1, v2):
+                self.__mark_edge_as_visited(v1, v2)
                 break
         return self.vertices.index(v2)
 
-    def getNextVertexWithUnvisitedEdge(self, tour):
+    def __get_next_vertex_with_unvisited_edge(self, tour):
         """procura o próxima vértice que tem uma aresta (edge) não visitada, dentro de uma lista incremental (tour)"""
-        nIndex = -1
+        index = -1
         for i in tour:
-            if nIndex < 0:
+            if index < 0:
                 for j in self.adjacent[self.vertices.index(i)]:
-                    if not self.alreadyVisitedEdge(i, j):
-                        nIndex = self.findEdge(i, j)
+                    if not self.__already_visited_edge(i, j):
+                        index = self.find_edge(i, j)
                         break
-                if nIndex >= 0:
-                    for m in self.edges[nIndex]:
+                if index >= 0:
+                    for m in self.edges[index]:
                         if m == i:
-                            nIndex = m
+                            index = m
                             break
-        if nIndex < 0:
-            return nIndex
-        return self.vertices.index(nIndex)
+        if index < 0:
+            return index
+        return self.vertices.index(index)
 
-    def depth_search_subcycle(self, vIndex):
+    def __depth_search_subcycle(self, vIndex):
         tour = []  # armazena o tour completo
         subtour = []  # armazena o subciclo
 
@@ -152,7 +153,7 @@ class Graph:
         while True:
 
             # da lista de vértices já percorridos, retorna o que ainda tem alguma aresta a visitar
-            vCurrentIdx = self.getNextVertexWithUnvisitedEdge(tour)
+            vCurrentIdx = self.__get_next_vertex_with_unvisited_edge(tour)
             # se não houver, encerra a busca pois o ciclo está pronto
             if vCurrentIdx < 0:
                 break
@@ -161,7 +162,7 @@ class Graph:
             subtour.append(self.vertices[vCurrentIdx])
 
             while True:
-                uidx = self.getNextVertexIndex(vCurrentIdx)
+                uidx = self.__get_next_vertex_index(vCurrentIdx)
                 subtour.append(self.vertices[uidx])
                 vCurrentIdx = uidx
                 if (vStartIdx == vCurrentIdx):
@@ -184,4 +185,4 @@ class Graph:
         """funcao para identificar circuito euleriano
         start - posição inicial para iniciar a pesquisa
         """
-        self.depth_search_subcycle(start)
+        self.__depth_search_subcycle(start)
