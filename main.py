@@ -12,11 +12,11 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.import_file('./data/2.graph')
+G.import_file('./data/5.graph')
 isConnected = G.is_connected()
 isAllPair = G.is_all_pair()
 if (isConnected and isAllPair):
-    G.Hierholzer(3)  # enviar índice do vértice inicial (deveria ser opcional)
+    G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
 
 print("\n---------------------------------------------------")
 print("Grafo conexo? %r" % isConnected)
@@ -25,6 +25,7 @@ print("Vértices %r" % G.get_vertices())
 print("Adjacenes %r" % G.get_adjacent())
 print("Arestas %r" % G.get_edges())
 print("Euler Cycle: %r" % G.get_euler_cycle())
+print("Euler Cycle subtours: %r" % G.get_sub_tours())
 print("---------------------------------------------------\n",)
 
 # Abre imagem conforme estrutura da classe Graph

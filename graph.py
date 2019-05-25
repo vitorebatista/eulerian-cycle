@@ -12,13 +12,15 @@ import csv
 
 class Graph:
     def __init__(self):
+        self.file = ""
         self.vertices = []
         self.visitedVertices = []
         self.visitedEdges = []
         self.adjacent = []
         self.edges = []
         self.eulerCycle = []
-        self.file = ""
+        self.subtours = []
+        
 
     def get_vertices(self):
         return self.vertices
@@ -31,6 +33,9 @@ class Graph:
 
     def get_euler_cycle(self):
         return self.eulerCycle
+
+    def get_sub_tours(self):
+        return self.subtours
 
     def image_file(self):
         return self.file
@@ -162,18 +167,17 @@ class Graph:
                 if (startIdx == currentIdx):
                     break
 
-            for i in subtour:
-                tour.append(i)
-
             # faz a aglutinação dos subciclos no ciclo de euler
             # troca o vértice isolado pela nova subsequência
             position = self.eulerCycle.index(subtour[0])
             self.eulerCycle.pop(position)
             for i in subtour:
+                tour.append(i)
                 self.eulerCycle.insert(position, i)
                 position += 1
-
-            subtour.clear()
+            
+            self.subtours.append(subtour)
+            subtour = []
 
     def Hierholzer(self, start = 0):
         """funcao para identificar circuito euleriano
