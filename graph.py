@@ -93,28 +93,24 @@ class Graph:
 
     def find_edge(self, v1, v2):
         """passa o valor dos vértices v1 e v2 e retorna o índice da aresta em self.edges"""
-        nPos = self.edges.count([v1, v2])
-        if nPos == 0:
-            nPos = self.edges.index([v2, v1])
-        else:
-            nPos = self.edges.index([v1, v2])
-        return nPos
+        position = self.edges.count([v1, v2])
+        return self.edges.index([v2, v1] if position == 0 else [v1, v2])
 
     def __mark_edge_as_visited(self, v1, v2):
         """passa o valor dos vérticies v1 e v2 e marca aresta como visitada em self.visitedEdges"""
-        nPos = self.find_edge(v1, v2)
-        self.visitedEdges[nPos] = 1
-        return nPos
+        position = self.find_edge(v1, v2)
+        self.visitedEdges[position] = 1
+        return position
 
     def __already_visited_edge(self, v1, v2):
         """passa o valor dos vértices v1 e v2 e verifica se a aresta já foi visitada"""
         nPos = self.find_edge(v1, v2)
         return (self.visitedEdges[nPos] == 1)
 
-    def __get_next_vertex_index(self, vIdx):
+    def __get_next_vertex_index(self, index):
         """retorna o próximo vértice que pode visitar a partir de um vértice de origem (índice)"""
-        v1 = self.vertices[vIdx]
-        for v2 in self.adjacent[vIdx]:
+        v1 = self.vertices[index]
+        for v2 in self.adjacent[index]:
             if not self.__already_visited_edge(v1, v2):
                 self.__mark_edge_as_visited(v1, v2)
                 break
@@ -138,34 +134,32 @@ class Graph:
             return index
         return self.vertices.index(index)
 
-    def __depth_search_subcycle(self, vIndex):
+    def __depth_search_subcycle(self, index):
         tour = []  # armazena o tour completo
         subtour = []  # armazena o subciclo
 
-        # inicia com um vértice aleatório, digamos
-        vStartIdx = vIndex
         # adiciona o valor do vértice ao circuito de controle
-        tour.append(self.vertices[vStartIdx])
+        tour.append(self.vertices[index])
         # adiciona o valor do vértice ao circuito final
-        self.eulerCycle.append(self.vertices[vStartIdx])
+        self.eulerCycle.append(self.vertices[index])
 
         # percorre o grafo até que todos os vértices tenham sido visitados
         while True:
 
             # da lista de vértices já percorridos, retorna o que ainda tem alguma aresta a visitar
-            vCurrentIdx = self.__get_next_vertex_with_unvisited_edge(tour)
+            currentIdx = self.__get_next_vertex_with_unvisited_edge(tour)
             # se não houver, encerra a busca pois o ciclo está pronto
-            if vCurrentIdx < 0:
+            if currentIdx < 0:
                 break
 
-            vStartIdx = vCurrentIdx
-            subtour.append(self.vertices[vCurrentIdx])
+            startIdx = currentIdx
+            subtour.append(self.vertices[currentIdx])
 
             while True:
-                uidx = self.__get_next_vertex_index(vCurrentIdx)
+                uidx = self.__get_next_vertex_index(currentIdx)
                 subtour.append(self.vertices[uidx])
-                vCurrentIdx = uidx
-                if (vStartIdx == vCurrentIdx):
+                currentIdx = uidx
+                if (startIdx == currentIdx):
                     break
 
             for i in subtour:
@@ -173,11 +167,11 @@ class Graph:
 
             # faz a aglutinação dos subciclos no ciclo de euler
             # troca o vértice isolado pela nova subsequência
-            nPos = self.eulerCycle.index(subtour[0])
-            self.eulerCycle.pop(nPos)
+            position = self.eulerCycle.index(subtour[0])
+            self.eulerCycle.pop(position)
             for i in subtour:
-                self.eulerCycle.insert(nPos, i)
-                nPos += 1
+                self.eulerCycle.insert(position, i)
+                position += 1
 
             subtour.clear()
 
