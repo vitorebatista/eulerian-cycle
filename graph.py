@@ -18,6 +18,7 @@ class Graph:
         self.adjacent = []
         self.edges = []
         self.eulerCycle = []
+        self.file = ""
 
     def getVertices(self):
         return self.vertices
@@ -30,6 +31,9 @@ class Graph:
 
     def getEulerCycle(self):
         return self.eulerCycle
+
+    def getFile(self):
+        return self.file
 
     def addVertex(self, ident):
         self.vertices.append(ident)
@@ -47,9 +51,10 @@ class Graph:
             self.adjacent[v1].append(edge[1])
             self.adjacent[v2].append(edge[0])
 
-    def importFile(self, fileDir):
+    def importFile(self, file):
+        self.file = file
         line = 0
-        with open(fileDir, newline='') as inputfile:
+        with open(file, newline='') as inputfile:
             for row in csv.reader(inputfile):
                 line += 1
                 if (line == 1):  # na primeira linha encontra todos os vertices
