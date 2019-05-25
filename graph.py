@@ -19,6 +19,15 @@ class Graph:
         self.edges = []
         self.eulerCycle = []
 
+    def getVertices(self):
+        return self.vertices
+
+    def getAdjacent(self):
+        return self.adjacent
+
+    def getEdges(self):
+        return self.edges
+
     def getEulerCycle(self):
         return self.eulerCycle
 
