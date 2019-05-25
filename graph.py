@@ -19,38 +19,38 @@ class Graph:
     def __init__(self, direcionado=False):
         self.vertices = []
         self.visitedVertices = []
-        self.visitedArestas = []
+        self.visitedEdges = []
         self.adjacent = []
-        self.arestas = []
+        self.edges = []
         self.eulerCycle = []
 
-    def newVertice(self, ident):
+    def addVertex(self, ident):
         self.vertices.append( ident )
         self.visitedVertices.append(0)
         self.adjacent.append( [] )
 
-    def newAresta(self, v1, v2):
-        self.arestas.append( [v1, v2] )
-        self.visitedArestas.append(0)
+    def addEdge(self, v1, v2):
+        self.edges.append( [v1, v2] )
+        self.visitedEdges.append(0)
 
-    def montaAdjacentes(self):
-        for i in self.arestas:
-            nPos1 = self.vertices.index(i[0])
-            nPos2 = self.vertices.index(i[1])
-            self.adjacent[nPos1].append( i[1] )
-            self.adjacent[nPos2].append( i[0] )
+    def createAdjacencyList(self):
+        for edge in self.edges:
+            v1 = self.vertices.index( edge[0] )
+            v2 = self.vertices.index( edge[1] )
+            self.adjacent[ v1 ].append( edge[1] )
+            self.adjacent[ v2 ].append( edge[0] )
 
     def importFile(self, fileDir):
-        nLine = 0
+        line = 0
         with open(fileDir, newline='') as inputfile:
             for row in csv.reader(inputfile):
-                nLine += 1
-                if (nLine == 1): # na primeira linha encontra todos os vertices
+                line += 1
+                if (line == 1): # na primeira linha encontra todos os vertices
                     for i in row:
-                        self.newVertice( int(i) )
-                else: # nas demais linhas encontra as arestas
-                    self.newAresta( int(row[0]), int(row[1]) )
-        self.montaAdjacentes()
+                        self.addVertex( int(i) )
+                else: # nas demais linhas encontra as arestas (edges)
+                    self.addEdge( int(row[0]), int(row[1]) )
+        self.createAdjacencyList()
 
     def depth_search(self,vIndex): # recebe o index do vertice a fazer a busca em profundidade
         self.visitedVertices[ vIndex ] = 1 # marca vertice como visitado (pelo seu indice)
@@ -71,46 +71,46 @@ class Graph:
 
 
 
-    # passa o valor dos vértices v1 e v2 e retorna o índice da aresta em self.arestas
-    def getArestaPosition(self,v1,v2):
-        nPos = self.arestas.count([v1,v2])
+    # passa o valor dos vértices v1 e v2 e retorna o índice da aresta em self.edges
+    def getEdgePosition(self,v1,v2):
+        nPos = self.edges.count([v1,v2])
         if nPos == 0:
-            nPos = self.arestas.index([v2,v1])
+            nPos = self.edges.index([v2,v1])
         else:
-            nPos = self.arestas.index([v1,v2])
+            nPos = self.edges.index([v1,v2])
         return nPos
 
-    # passa o valor dos vérticies v1 e v2 e marca aresta como visitada em self.visitedArestas
-    def markArestaAsVisited(self,v1,v2):
-        nPos = self.getArestaPosition(v1,v2)
-        self.visitedArestas[nPos] = 1
+    # passa o valor dos vérticies v1 e v2 e marca aresta como visitada em self.visitedEdges
+    def markEdgeAsVisited(self,v1,v2):
+        nPos = self.getEdgePosition(v1,v2)
+        self.visitedEdges[nPos] = 1
         return nPos
 
     # passa o valor dos vértices v1 e v2 e verifica se a aresta já foi visitada
-    def alreadyVisitedAresta(self,v1,v2):
-        nPos = self.getArestaPosition(v1,v2)
-        return (self.visitedArestas[nPos] == 1)
+    def alreadyVisitedEdge(self,v1,v2):
+        nPos = self.getEdgePosition(v1,v2)
+        return (self.visitedEdges[nPos] == 1)
 
     # retorna o próximo vértice que pode visitar a partir de um vértice de origem (índice)
     def getNextVertexIndex(self,vIdx):
         v1 = self.vertices[vIdx]
         for v2 in self.adjacent[vIdx]:
-            if not self.alreadyVisitedAresta(v1,v2):
-                self.markArestaAsVisited(v1,v2)
+            if not self.alreadyVisitedEdge(v1,v2):
+                self.markEdgeAsVisited(v1,v2)
                 break
         return self.vertices.index(v2)
     
-    # procura o próxima vértice que tem uma aresta não visitada, dentro de uma lista incremental (tour)
+    # procura o próxima vértice que tem uma aresta (edge) não visitada, dentro de uma lista incremental (tour)
     def getNextVertexWithUnvisitedEdge(self,tour):
         nIndex = -1
         for i in tour:
             if nIndex < 0:
                 for j in self.adjacent[self.vertices.index(i)]:
-                    if not self.alreadyVisitedAresta(i,j):
-                        nIndex = self.getArestaPosition(i,j)
+                    if not self.alreadyVisitedEdge(i,j):
+                        nIndex = self.getEdgePosition(i,j)
                         break
                 if nIndex >= 0:
-                    for m in self.arestas[nIndex]:
+                    for m in self.edges[nIndex]:
                         if m == i:
                             nIndex = m
                             break
