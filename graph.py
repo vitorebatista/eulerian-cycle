@@ -175,7 +175,7 @@ class Graph:
 
             subtour.clear()
 
-    def Hierholzer(self, start):
+    def Hierholzer(self, start = 0):
         """funcao para identificar circuito euleriano
         start - posição inicial para iniciar a pesquisa
         """
