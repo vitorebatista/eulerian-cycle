@@ -11,7 +11,7 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.importFile('./data/6.graph')
+G.importFile('./data/5.graph')
 G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
 
 print("\n---------------------------------------------------")
