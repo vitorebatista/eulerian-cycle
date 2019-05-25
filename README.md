@@ -13,8 +13,7 @@ $ python main.py
 
 ## Prints
 
-<img src="./data/1.png" width="250" height="250">
-<img src="./data/2.png" width="250" height="250">
+<img src="./data/1.png" width="250" height="250"><img src="./data/2.png" width="250" height="250">
 <img src="./data/3.png" width="250" height="250">
 <img src="./data/4.png" width="250" height="250">
 <img src="./data/5.png" width="250" height="250">
