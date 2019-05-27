@@ -12,9 +12,9 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.import_file('./data/5.graph')
-isConnected = G.is_connected()
-isAllPair = G.is_all_pair()
+G.import_file('./data/1.graph')
+isConnected = G.is_connected() # O(|Vˆ2|)
+isAllPair = G.is_all_pair() # O(|A|)
 if (isConnected and isAllPair):
     G.Hierholzer(0)  # enviar índice do vértice inicial (deveria ser opcional)
 
