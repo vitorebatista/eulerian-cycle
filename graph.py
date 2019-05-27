@@ -145,7 +145,10 @@ class Graph:
             return index
         return self.vertices.index(index)
 
-    def __depth_search_subcycle(self, index):
+    def euler_cycle(self, index  = 0):
+        """ Função para identificar circuito euleriano utilizando o método de Hierholzer
+        index - posição para iniciar a pesquisa
+        """
         tour = []  # armazena o tour completo
         subtour = []  # armazena o subciclo
 
@@ -184,9 +187,3 @@ class Graph:
             
             self.subtours.append(subtour)
             subtour = []
-
-    def Hierholzer(self, start = 0):
-        """funcao para identificar circuito euleriano
-        start - posição inicial para iniciar a pesquisa
-        """
-        self.__depth_search_subcycle(start)
