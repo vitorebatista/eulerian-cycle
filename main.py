@@ -11,7 +11,7 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.import_file('./data/1.graph')
+G.import_file('./data/1.graph') # O(|A|)
 isConnected = G.is_connected()  # O(|Vˆ2|)
 isAllPair = G.is_all_pair()  # O(|A|)
 if (isConnected and isAllPair):
