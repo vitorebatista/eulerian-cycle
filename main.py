@@ -15,7 +15,7 @@ G.import_file('./data/1.graph') # O(|A|)
 isConnected = G.is_connected()  # O(|Vˆ2|)
 isAllPair = G.is_all_pair()  # O(|A|)
 if (isConnected and isAllPair):
-    G.euler_cycle(0)  # enviar índice do vértice inicial (deveria ser opcional)
+    G.euler_cycle(0) # O(|A|^2)
 
 print("\n---------------------------------------------------")
 print("Grafo conexo? %r" % isConnected)
