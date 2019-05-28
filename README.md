@@ -5,7 +5,7 @@
 * [Felipe Nathan Welter](https://github.com/felipenwelter)
 * [Vitor Emanuel Batista](https://github.com/vitorebatista)
 
-### Algoritmos implementados
+### Funções implementadas
 
 #### import_file
 
@@ -13,7 +13,7 @@ Importa um arquivo .graph com a estrutura de um grafo. Na primeira linha devem e
 
 *Complexidade da implementação: O(|A|) + [O(|A|) * O(|v|)] = O(|A|) * O(|v|) sendo A o número de arestas e v o número de vértices do grafo. A função percorre todas as arestas definidas no arquivo .graph, cuja complexidade resultante é O(|A|) e ao final executa a chamada da função __create_adjacency_list() que percorre todas as arestas (O(|A|))para montar uma lista de adjacências, que internamente realiza busca indexada em todos os vértices (O(|v|)).*
 
-### is_connected
+#### is_connected
 
 Tem por objetivo verificar se todos os vértices estão conectados, premissa para identificar a existência de um ciclo euleriano. Internamente realiza uma busca em profundidade (__depth_search) e vai marcando cada vértice como visitado. Ao final realiza uma contagem de vértices não visitados para identificar se o grafo é conexo.
 
@@ -21,13 +21,13 @@ Tem por objetivo verificar se todos os vértices estão conectados, premissa par
 
 *Complexidade da implementação (is_connected): O(|vˆ3|) + O(|v|) sendo v o número de vértices do grafo. Realiza a busca em profundidade e uma busca por vértices não visitados com complexidade O(|v|).*
 
-### is_all_pair
+#### is_all_pair
 
 Verifica se o vértices tem grau par, ou seja, se o número de arestas de cada vértice é par, sendo esse um requisito para identificar se o grafo possui ciclo euleriano.
 
 *Complexidade da implementação: O(|v|), pois para cada vértice identifica o tamanho da lista de adjacências e verifica o módulo dois para identificar se é ou não par, portanto tem complexidade relativa ao número de vértices O(|v|).*
 
-### euler_cycle
+#### euler_cycle
 
 Realiza a montagem de um ciclo euleriano a partir de um vértice inicial, um caminho que visita cada aresta uma vez, terminando no ponto de partida. A montagem do ciclo utiliza como base o algoritmo de Hierholzer, que realiza a busca em profundidade na intenção de montar subciclos e, a partir de vértices desse subciclo, monta novos subciclos e os agrega ao ciclo euleriano. Exemplificando de forma simples, um subciclo 1-2-3-4-1 cujo vértice 4 tem conexão para outros vértices 4-5-6-4 seria redefinido pela mescla desses dois subciclos, o que resultaria em um caminho euleriano 1-2-3-[4-5-6-4]-1, como se pode observar no exemplo 4.graph.
 
@@ -37,28 +37,28 @@ Realiza a montagem de um ciclo euleriano a partir de um vértice inicial, um cam
 
 *Complexidade da implementação (euler_cycle): # O(|v|*|A|^2). Sua complexidade é dominada assintoticamente pela complexidade da função __get_next_vertex_with_unvisited_edge().*
 
-## Considerações
+### Considerações
 
 A implementação utiliza uma classe para realizar o controle do grafo, sendo que vértices e arestas são definidos como objetos do tipo lista encadeada. O controle de visitas dos vértices e arestas está sendo realizada por meio de um array auxiliar de valores booleanos, sendo que quando se sabe o índice do vértice/aresta a se buscar o custo é relativamente pequeno, porém em muitos casos se faz necessário realizar a busca da posição do elemento por meio da função index() ou por meio de comparações sucessivas, o que acresce significativamente a complexidade de tempo do algoritmo. Para a melhoria da presente implementação se pode sugerir a substituição das listas encadeadas por alguma estrutura que permita acessos diretos com custo reduzido, tal como um hashmap, por exemplo.
 
 
-## Instalação
+### Instalação
 Necessário ter [Pipenv](https://github.com/pypa/pipenv#installation) e executar:
 ```shell
 $ pipenv install 
 ```
 
-## Utilização
+### Utilização
 
 ```shell
 $ pipenv shell
 $ python main.py
 ```
 
-## Ideia do algoritmo de Hierholzer
+### Ideia do algoritmo de Hierholzer
 A idéia básica do algoritmo de Hierholzer é uma construção passo-a-passo do ciclo Euleriano por meio da conexão de subciclos. O início se dá em um vértice qualquer e segue para um vértice adjacente ainda não visitado, repetindo esse procedimento até que se retorne ao nó inicial, o que produz um primeiro ciclo no grafo. Caso cubra todos as arestas, se trata do próprio ciclo Euleriano e o algoritmo pode ser finalizado, caso contrário seleciona, entre os vértices do atual ciclo, um que ainda possua uma aresta que leve para um vértice não visitado, permitindo que se monte um novo subciclo a partir do primeiro, que então são mesclados. Se o ciclo estendido incluir todas as arestas, o algoritmo estará concluído.
 
-## Prints
+### Prints
 
 <img src="./data/1.png" width="250" height="250"><img src="./data/2.png" width="250" height="250">
 <img src="./data/3.png" width="250" height="250">
@@ -69,5 +69,6 @@ A idéia básica do algoritmo de Hierholzer é uma construção passo-a-passo do
 <img src="./data/8.png" width="250" height="250">
 <img src="./data/9.png" width="250" height="250">
 
-## Contributing
-PRs are welcome, if you have any questions don't be afraid to open an issue.
+### Contribuições
+
+Novos PR's são bem-vindos. Se tiver alguma questão fique à vontade para abrir uma issue.
