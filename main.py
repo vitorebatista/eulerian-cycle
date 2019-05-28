@@ -12,10 +12,10 @@ from image import image
 
 G = Graph()
 G.import_file('./data/3.graph') # O(|A|)
-isConnected = G.is_connected()  # O(|Vˆ2|)
-isAllPair = G.is_all_pair()  # O(|A|)
+isConnected = G.is_connected()  # O(|V|^3)
+isAllPair = G.is_all_pair()  # O(|v|)
 if (isConnected and isAllPair):
-    G.euler_cycle(0) # O(|A|^2)
+    G.euler_cycle(0) # O(|v|*|A|^2)
 
 print("\n---------------------------------------------------")
 print("Grafo conexo? %r" % isConnected)

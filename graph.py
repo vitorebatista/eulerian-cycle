@@ -84,14 +84,15 @@ class Graph:
         # para cada vértice adjacente (busca pelo índice)
         for adj in self.adjacent[index]: # O(|A|), no pior caso O(|vˆ2|)
             # verifica se ainda não foi visitado
-            if (self.visitedVertices[self.vertices.index(adj)] == 0): # O(|V|)
+            position = self.vertices.index(adj) # O(|V|)
+            if (self.visitedVertices[position] == 0): # O(1)
                 # busca nos vertices ligados, passando o index
-                self.__depth_search(self.vertices.index(adj))
+                self.__depth_search(position)
 
-    def is_connected(self): # O(|Vˆ2|)
+    def is_connected(self): # O(|vˆ3|)
         """verifica se grafo é conexo"""
         # busca nos vertices ligados, passando o index de um elemento qualquer
-        self.__depth_search(0)
+        self.__depth_search(0) # O(|vˆ3|)
         # verifica se algum vertice nao foi visitado após a busca
         return (self.visitedVertices.count(0) == 0) # O(|v|)
 
