@@ -1,3 +1,64 @@
+## Grafos - Ciclo Euleriano
+
+### Integrantes do projeto:
+
+* [Felipe Nathan Welter](https://github.com/felipenwelter)
+* [Vitor Emanuel Batista](https://github.com/vitorebatista)
+
+### Algoritmos implementados
+
+#### import_file
+
+Importa um arquivo .graph com a estrutura de um grafo. Na primeira linha devem estar descritos todos os vértices, separados por vírgula e, a cada linha que segue, uma aresta configurada pela definição dos seus dois vértices (não direcionado).
+
+*Complexidade da implementação: O(|A|) + O(|A|) sendo A o número de arestas do grafo. A função percorre todas as arestas definidas no arquivo .graph e ao final executa a chamada da função __create_adjacency_list() que percorre todas as arestas para montar uma lista de adjacências.*
+
+### is_connected
+
+Tem por objetivo verificar se todos os vértices estão conectados, premissa para identificar a existência de um ciclo euleriano. Internamente realiza uma busca em profundidade (__depth_search) e vai marcando cada vértice como visitado. Ao final realiza uma contagem de vértices não visitados para identificar se o grafo é conexo.
+
+*Complexidade da implementação (__depth_search): O(|vˆ3|) sendo v o número de vértices do grafo. A função realiza uma busca em profundidade (__depth_search) que percorre para cada vértice a sua lista de adjacências - uma vez no sentido v1 para v2 e outra no sentido v2 para v1, o que tem complexidade O(|A|), que no pior caso se aproxima de O(|vˆ2|) caso todos os vértices estejam interligados. Para cada iteração realiza ainda uma busca na lista de vértices visitados, uma lista que tem o mesmo tamanho do número de vértices, resultando em uma complexidade O(|vˆ2|) * O(|v|) = O(|vˆ3|).*
+
+*Complexidade da implementação (is_connected): O(|vˆ3|) + O(|v|) sendo v o número de vértices do grafo. Realiza a busca em profundidade e uma busca por vértices não visitados com complexidade O(|v|).*
+
+### is_all_pair
+
+Verifica se o vértices tem grau par, ou seja, se o número de arestas de cada vértice é par, sendo esse um requisito para identificar se o grafo possui ciclo euleriano.
+
+*Complexidade da implementação: Para cada vértice identifica o tamanho da lista de adjacências e verifica o módulo dois para identificar se é ou não par, portanto tem complexidade relativa ao número de vértices O(|v|).*
+
+### euler_cycle
+
+
+
+
+## Classes Utilizadas
+
+* Class Arquivo
+
+Dentro dessa classe, encontra-se as funções responsaveis por abrir, ler e gravar em cada variavel os dados contidos no arquivo de entrada.
+
+É nela que estão localizadas os algoritmos responsáveis por chamar as funções Largura, Profundidade e Dijkstra. 
+
+* Class Grafo
+
+Nessa classe, as funções recebem os dados extraidos na Class Arquivo e calcula a Largura, Profundidade e o menor caminho. 
+
+* Class Main
+
+É a classe responsavel por fazer as validações nos arquivos de entrada e saída e por executar a lista de comandos do arquivo de entrada.
+
+* Class Interface
+
+Responsavel por carregar a interface utilizada no projeto.
+
+
+
+
+
+
+
+
 ## Installation
 Make sure you have [Pipenv](https://github.com/pypa/pipenv#installation) and execute:
 ```shell

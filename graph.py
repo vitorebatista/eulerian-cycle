@@ -55,49 +55,49 @@ class Graph:
         self.edges.append([v1, v2]) # O(1)
         self.visitedEdges.append(0) # O(1)
 
-    def __create_adjacency_list(self):
+    def __create_adjacency_list(self): # O(|A|)
         for edge in self.edges:
             v1 = self.vertices.index(edge[0])
             v2 = self.vertices.index(edge[1])
             self.adjacent[v1].append(edge[1])
             self.adjacent[v2].append(edge[0])
 
-    def import_file(self, file): # O(|A|)
+    def import_file(self, file): # O(|A|) + O(|A|)
         self.file = file # O(1)
         line = 0 # O(1)
         with open(file, newline='') as inputfile: # O(1)
             for row in csv.reader(inputfile): # O(|A|)
-                line += 1 # O(1)
+                line += 1
                 # na primeira linha encontra todos os vertices
-                if (line == 1):  # O(1)
-                    for i in row: # O(|V|)
+                if (line == 1):
+                    for i in row:
                         self.add_vertex(int(i))
                 else:  # nas demais linhas encontra as arestas (edges)
                     self.add_edge(int(row[0]), int(row[1]))
-        self.__create_adjacency_list()
+        self.__create_adjacency_list() # O(|A|)
 
-    def __depth_search(self, index): # O(|Vˆ2|)
+    def __depth_search(self, index): # O(|vˆ2|) * O(|v|) = O(|vˆ3|)
         """ Recebe o index do vertice a fazer a busca em profundidade """
 
         # marca vertice como visitado (pelo seu indice)
         self.visitedVertices[index] = 1 # O(1)
         # para cada vértice adjacente (busca pelo índice)
-        for adj in self.adjacent[index]: # O(|A|)
+        for adj in self.adjacent[index]: # O(|A|), no pior caso O(|vˆ2|)
             # verifica se ainda não foi visitado
             if (self.visitedVertices[self.vertices.index(adj)] == 0): # O(|V|)
                 # busca nos vertices ligados, passando o index
-                self.__depth_search(self.vertices.index(adj)) # O(|V|)
+                self.__depth_search(self.vertices.index(adj))
 
     def is_connected(self): # O(|Vˆ2|)
         """verifica se grafo é conexo"""
         # busca nos vertices ligados, passando o index de um elemento qualquer
         self.__depth_search(0)
         # verifica se algum vertice nao foi visitado após a busca
-        return (self.visitedVertices.count(0) == 0) # O(1)
+        return (self.visitedVertices.count(0) == 0) # O(|v|)
 
-    def is_all_pair(self): # O(|A|)
+    def is_all_pair(self): # O(|v|)
         """verifica se todos os vertices tem grau par"""
-        for i in self.adjacent: # O(|A|)
+        for i in self.adjacent: # O(|v|)
             if (len(i) % 2) > 0: # O(1)
                 return False
         return True

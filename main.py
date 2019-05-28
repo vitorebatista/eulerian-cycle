@@ -15,7 +15,7 @@ G.import_file('./data/1.graph')
 isConnected = G.is_connected()  # O(|Vˆ2|)
 isAllPair = G.is_all_pair()  # O(|A|)
 if (isConnected and isAllPair):
-    G.euler_cycle(0)  # enviar índice do vértice inicial (deveria ser opcional)
+    G.euler_cycle(0)  # enviar índice do vértice inicial (opcional)
 
 print("\n---------------------------------------------------")
 print("Grafo conexo? %r" % isConnected)
@@ -23,8 +23,11 @@ print("Cada vertice tem número par de arestas? %r" % isAllPair)
 print("Vértices %r" % G.get_vertices())
 print("Adjacenes %r" % G.get_adjacent())
 print("Arestas %r" % G.get_edges())
-print("Euler Cycle: %r" % G.get_euler_cycle())
-print("Euler Cycle subtours: %r" % G.get_sub_tours())
+if (isConnected and isAllPair):
+    print("Ciclo Euleriano: %r" % G.get_euler_cycle())
+    print("Ciclo Euleriano (subciclos): %r" % G.get_sub_tours())
+else:
+    print("Grafo não possui ciclo Euleriano.")
 print("---------------------------------------------------\n",)
 
 # Abre imagem conforme estrutura da classe Graph
