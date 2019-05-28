@@ -11,7 +11,7 @@
 
 Importa um arquivo .graph com a estrutura de um grafo. Na primeira linha devem estar descritos todos os vértices, separados por vírgula e, a cada linha que segue, uma aresta configurada pela definição dos seus dois vértices (não direcionado).
 
-*Complexidade da implementação: O(|A|) + O(|A|) sendo A o número de arestas do grafo. A função percorre todas as arestas definidas no arquivo .graph e ao final executa a chamada da função __create_adjacency_list() que percorre todas as arestas para montar uma lista de adjacências.*
+*Complexidade da implementação: O(|A|) + [O(|A|) * O(|v|)] = O(|A|) * O(|v|) sendo A o número de arestas e v o número de vértices do grafo. A função percorre todas as arestas definidas no arquivo .graph, cuja complexidade resultante é O(|A|) e ao final executa a chamada da função __create_adjacency_list() que percorre todas as arestas (O(|A|))para montar uma lista de adjacências, que internamente realiza busca indexada em todos os vértices (O(|v|)).*
 
 ### is_connected
 
