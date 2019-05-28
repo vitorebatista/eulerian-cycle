@@ -125,7 +125,7 @@ class Graph:
                 break
         return self.vertices.index(v2) # O(|V|)
 
-    def __get_next_vertex_with_unvisited_edge(self, tour): # O(|A|^2)
+    def __get_next_vertex_with_unvisited_edge(self, tour): # O(|v|*|A|^2)
         """ Procura o próxima vértice que tem uma aresta (edge) não visitada,
             dentro de uma lista incremental (tour)
         """
@@ -143,9 +143,9 @@ class Graph:
                             break
         if index < 0: # O(1)
             return index
-        return self.vertices.index(index)
+        return self.vertices.index(index) # O(|V|)
 
-    def euler_cycle(self, index  = 0): # O(|A|^2)
+    def euler_cycle(self, index  = 0): # O(|v|*|A|^2)
         """ Função para identificar circuito euleriano utilizando o método de Hierholzer
         index - posição para iniciar a pesquisa
         """
@@ -163,7 +163,7 @@ class Graph:
         while True:
 
             # da lista de vértices já percorridos, retorna o que ainda tem alguma aresta a visitar
-            currentIdx = self.__get_next_vertex_with_unvisited_edge(tour) # O(|A|^2)
+            currentIdx = self.__get_next_vertex_with_unvisited_edge(tour) # O(|v|*|A|^2)
             # se não houver, encerra a busca pois o ciclo está pronto
             if currentIdx < 0: # O(1)
                 break
@@ -171,7 +171,7 @@ class Graph:
             startIdx = currentIdx # O(1)
             subtour.append(self.vertices[currentIdx]) # O(1)
 
-            while True: # O(|A|^2)
+            while True: # O(|A|^2) * [executa para todos os vértices] O(|v|)
                 uidx = self.__get_next_vertex_index(currentIdx) # O(|A|^2)
                 subtour.append(self.vertices[uidx]) # O(1)
                 currentIdx = uidx # O(1)

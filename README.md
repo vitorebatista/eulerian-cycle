@@ -25,57 +25,38 @@ Tem por objetivo verificar se todos os vértices estão conectados, premissa par
 
 Verifica se o vértices tem grau par, ou seja, se o número de arestas de cada vértice é par, sendo esse um requisito para identificar se o grafo possui ciclo euleriano.
 
-*Complexidade da implementação: Para cada vértice identifica o tamanho da lista de adjacências e verifica o módulo dois para identificar se é ou não par, portanto tem complexidade relativa ao número de vértices O(|v|).*
+*Complexidade da implementação: O(|v|), pois para cada vértice identifica o tamanho da lista de adjacências e verifica o módulo dois para identificar se é ou não par, portanto tem complexidade relativa ao número de vértices O(|v|).*
 
 ### euler_cycle
 
+Realiza a montagem de um ciclo euleriano a partir de um vértice inicial, um caminho que visita cada aresta uma vez, terminando no ponto de partida. A montagem do ciclo utiliza como base o algoritmo de Hierholzer, que realiza a busca em profundidade na intenção de montar subciclos e, a partir de vértices desse subciclo, monta novos subciclos e os agrega ao ciclo euleriano. Exemplificando de forma simples, um subciclo 1-2-3-4-1 cujo vértice 4 tem conexão para outros vértices 4-5-6-4 seria redefinido pela mescla desses dois subciclos, o que resultaria em um caminho euleriano 1-2-3-[4-5-6-4]-1, como se pode observar no exemplo 4.graph.
+
+*Complexidade da implementação (__get_next_vertex_with_unvisited_edge): O(|v| * |Aˆ2|). Essa implementação se utiliza da lista de vértices O(|v|) que compõem o caminho euleriano em construção e para cada vértice percorre a lista de arestas adjacentes O(|A|) para encontrar algum vértice que ainda não tenha sido visitado. Considerando que ao percorrer cada aresta da lista de arestas também realiza uma busca em todas as arestas O(|Aˆ2|), a complexidade resultante é O(|v| * |Aˆ2|).*
+
+*Complexidade da implementação (__get_next_vertex_index): O(|Aˆ2|). Retorna o próximo vértice que pode visitar a partir de um vértice dado. Para isso percorre a lista de adjacências do vértice O(|A|) e verifica se a aresta já foi visitada O(|A|)*
+
+*Complexidade da implementação (euler_cycle): # O(|v|*|A|^2). Sua complexidade é dominada assintoticamente pela complexidade da função __get_next_vertex_with_unvisited_edge().*
+
+## Considerações
+
+A implementação utiliza uma classe para realizar o controle do grafo, sendo que vértices e arestas são definidos como objetos do tipo lista encadeada. O controle de visitas dos vértices e arestas está sendo realizada por meio de um array auxiliar de valores booleanos, sendo que quando se sabe o índice do vértice/aresta a se buscar o custo é relativamente pequeno, porém em muitos casos se faz necessário realizar a busca da posição do elemento por meio da função index() ou por meio de comparações sucessivas, o que acresce significativamente a complexidade de tempo do algoritmo. Para a melhoria da presente implementação se pode sugerir a substituição das listas encadeadas por alguma estrutura que permita acessos diretos com custo reduzido, tal como um hashmap, por exemplo.
 
 
-
-## Classes Utilizadas
-
-* Class Arquivo
-
-Dentro dessa classe, encontra-se as funções responsaveis por abrir, ler e gravar em cada variavel os dados contidos no arquivo de entrada.
-
-É nela que estão localizadas os algoritmos responsáveis por chamar as funções Largura, Profundidade e Dijkstra. 
-
-* Class Grafo
-
-Nessa classe, as funções recebem os dados extraidos na Class Arquivo e calcula a Largura, Profundidade e o menor caminho. 
-
-* Class Main
-
-É a classe responsavel por fazer as validações nos arquivos de entrada e saída e por executar a lista de comandos do arquivo de entrada.
-
-* Class Interface
-
-Responsavel por carregar a interface utilizada no projeto.
-
-
-
-
-
-
-
-
-## Installation
-Make sure you have [Pipenv](https://github.com/pypa/pipenv#installation) and execute:
+## Instalação
+Necessário ter [Pipenv](https://github.com/pypa/pipenv#installation) e executar:
 ```shell
 $ pipenv install 
 ```
 
-## Usage
+## Utilização
 
 ```shell
 $ pipenv shell
 $ python main.py
 ```
 
-## Idea of the algorithm
-The basic idea of Hierholzer's algorithm is the stepwise construction of the Eulerian cycle by connecting dijunctive circles. It starts with a random node and then follows an arbitrary unvisited edge to a neighbour. This step is repeated until one returns to the starting node. This yields a first circle in the graph. If this circle covers all nodes it is an Eulerian cycle and the algorithm is finished. Otherwise, one chooses another node among the cycles' nodes with unvisited edges and constructs another circle, called subtour. By choice of edges in the construction the new circle does not contain any edge of the first circle, both are disjunct. However, both circles must intersect in at least one node by choice of the starting node of the second circle. Therefore one can represent both circles as one new circle. To do so, one iterates the nodes of the first circle and replaces the subtour's starting node by the complete node sequence of the subtour. Thus, one inegrates additional circles into the first circle. If the extended cycle does include all edges the algorithm is finished. Otherwise, we can find another cycle to include.
-
-In the case of an undirected, semi-Eulerian graph the algorithm starts with one of the two nodes with odd degree. In the directed case with the node with one additional outgoing edge. One of the subtours to be found will then not form a cycle, instead it will also be a path. When integrating this "subtour" into the circle one has to make sure that start and end node of this path also form start and end of the complete Eulerian path.
+## Ideia do algoritmo de Hierholzer
+A idéia básica do algoritmo de Hierholzer é uma construção passo-a-passo do ciclo Euleriano por meio da conexão de subciclos. O início se dá em um vértice qualquer e segue para um vértice adjacente ainda não visitado, repetindo esse procedimento até que se retorne ao nó inicial, o que produz um primeiro ciclo no grafo. Caso cubra todos as arestas, se trata do próprio ciclo Euleriano e o algoritmo pode ser finalizado, caso contrário seleciona, entre os vértices do atual ciclo, um que ainda possua uma aresta que leve para um vértice não visitado, permitindo que se monte um novo subciclo a partir do primeiro, que então são mesclados. Se o ciclo estendido incluir todas as arestas, o algoritmo estará concluído.
 
 ## Prints
 
