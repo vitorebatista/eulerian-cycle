@@ -71,12 +71,12 @@ class Graph:
                 # na primeira linha encontra todos os vertices
                 if (line == 1):
                     for i in row:
-                        self.add_vertex(int(i))
+                        self.add_vertex(int(i)) # O(1)
                 else:  # nas demais linhas encontra as arestas (edges)
                     self.add_edge(int(row[0]), int(row[1]))
-        self.__create_adjacency_list()
+        self.__create_adjacency_list() # O(|A|) * O(|v|)
 
-    def __depth_search(self, index): # O(|vˆ2|) * O(|v|) = O(|vˆ3|)
+    def __depth_search(self, index): # O(|A|) * O(|V|)
         """ Recebe o index do vertice a fazer a busca em profundidade """
 
         # marca vertice como visitado (pelo seu indice)
@@ -87,12 +87,12 @@ class Graph:
             position = self.vertices.index(adj) # O(|V|)
             if (self.visitedVertices[position] == 0): # O(1)
                 # busca nos vertices ligados, passando o index
-                self.__depth_search(position)
+                self.__depth_search(position) # O(|A|) * O(|V|)
 
-    def is_connected(self): # O(|vˆ3|)
+    def is_connected(self): # O(|A|) * O(|V|)
         """verifica se grafo é conexo"""
         # busca nos vertices ligados, passando o index de um elemento qualquer
-        self.__depth_search(0) # O(|vˆ3|)
+        self.__depth_search(0) # O(|A|) * O(|V|)
         # verifica se algum vertice nao foi visitado após a busca
         return (self.visitedVertices.count(0) == 0) # O(|v|)
 
@@ -133,7 +133,8 @@ class Graph:
         index = -1
         for i in tour: # O(|V|)
             if index < 0: # O(1)
-                for j in self.adjacent[self.vertices.index(i)]: # O(|A|)
+                position = self.vertices.index(i) # O(|V|)
+                for j in self.adjacent[position]: # O(|A|)
                     if not self.__already_visited_edge(i, j): # O(|A|)
                         index = self.find_edge(i, j) # O(|A|)
                         break

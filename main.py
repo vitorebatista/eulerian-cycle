@@ -11,8 +11,8 @@ from graph import Graph
 from image import image
 
 G = Graph()
-G.import_file('./data/3.graph') # O(|A|)
-isConnected = G.is_connected()  # O(|V|^3)
+G.import_file('./data/1.graph') # O(|A|)
+isConnected = G.is_connected()  # O(|A|) * O(|V|)
 isAllPair = G.is_all_pair()  # O(|v|)
 if (isConnected and isAllPair):
     G.euler_cycle(0) # O(|v|*|A|^2)

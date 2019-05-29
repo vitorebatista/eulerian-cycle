@@ -17,9 +17,9 @@ Importa um arquivo .graph com a estrutura de um grafo. Na primeira linha devem e
 
 Tem por objetivo verificar se todos os vértices estão conectados, premissa para identificar a existência de um ciclo euleriano. Internamente realiza uma busca em profundidade (__depth_search) e vai marcando cada vértice como visitado. Ao final realiza uma contagem de vértices não visitados para identificar se o grafo é conexo.
 
-*Complexidade da implementação (__depth_search): O(|vˆ3|) sendo v o número de vértices do grafo. A função realiza uma busca em profundidade (__depth_search) que percorre para cada vértice a sua lista de adjacências - uma vez no sentido v1 para v2 e outra no sentido v2 para v1, o que tem complexidade O(|A|), que no pior caso se aproxima de O(|vˆ2|) caso todos os vértices estejam interligados. Para cada iteração realiza ainda uma busca na lista de vértices visitados, uma lista que tem o mesmo tamanho do número de vértices, resultando em uma complexidade O(|vˆ2|) * O(|v|) = O(|vˆ3|).*
+*Complexidade da implementação (__depth_search): O(|A|) * O(|V|) sendo `V` o número de vértices do grafo e `A` o número de arestas. A função realiza uma busca em profundidade (__depth_search) que percorre para cada vértice a sua lista de adjacências - uma vez no sentido v1 para v2 e outra no sentido v2 para v1, o que tem complexidade O(|A|). Para cada iteração realiza ainda uma busca na lista de vértices visitados, uma lista que tem o mesmo tamanho do número de vértices, resultando em uma complexidade O(|A|) * O(|V|).*
 
-*Complexidade da implementação (is_connected): O(|vˆ3|) + O(|v|) sendo v o número de vértices do grafo. Realiza a busca em profundidade e uma busca por vértices não visitados com complexidade O(|v|).*
+*Complexidade da implementação (is_connected): O(|A|) * O(|V|) sendo `V` o número de vértices do grafo e `A` o número de arestas. Realiza a busca em profundidade e uma busca por vértices não visitados com complexidade O(|v|).*
 
 #### is_all_pair
 
@@ -31,7 +31,7 @@ Verifica se o vértices tem grau par, ou seja, se o número de arestas de cada v
 
 Realiza a montagem de um ciclo euleriano a partir de um vértice inicial, um caminho que visita cada aresta uma vez, terminando no ponto de partida. A montagem do ciclo utiliza como base o algoritmo de Hierholzer, que realiza a busca em profundidade na intenção de montar subciclos e, a partir de vértices desse subciclo, monta novos subciclos e os agrega ao ciclo euleriano. Exemplificando de forma simples, um subciclo 1-2-3-4-1 cujo vértice 4 tem conexão para outros vértices 4-5-6-4 seria redefinido pela mescla desses dois subciclos, o que resultaria em um caminho euleriano 1-2-3-[4-5-6-4]-1, como se pode observar no exemplo 4.graph.
 
-*Complexidade da implementação (__get_next_vertex_with_unvisited_edge): O(|v| * |Aˆ2|). Essa implementação se utiliza da lista de vértices O(|v|) que compõem o caminho euleriano em construção e para cada vértice percorre a lista de arestas adjacentes O(|A|) para encontrar algum vértice que ainda não tenha sido visitado. Considerando que ao percorrer cada aresta da lista de arestas também realiza uma busca em todas as arestas O(|Aˆ2|), a complexidade resultante é O(|v| * |Aˆ2|).*
+*Complexidade da implementação (__get_next_vertex_with_unvisited_edge): O(|v| * |A|^2). Essa implementação se utiliza da lista de vértices O(|v|) que compõem o caminho euleriano em construção e para cada vértice percorre a lista de arestas adjacentes O(|A|) para encontrar algum vértice que ainda não tenha sido visitado. Considerando que ao percorrer cada aresta da lista de arestas também realiza uma busca em todas as arestas O(|Aˆ2|), a complexidade resultante é O(|v| * |A|^2).*
 
 *Complexidade da implementação (__get_next_vertex_index): O(|Aˆ2|). Retorna o próximo vértice que pode visitar a partir de um vértice dado. Para isso percorre a lista de adjacências do vértice O(|A|) e verifica se a aresta já foi visitada O(|A|)*
 
