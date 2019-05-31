@@ -5,6 +5,23 @@
 * [Felipe Nathan Welter](https://github.com/felipenwelter)
 * [Vitor Emanuel Batista](https://github.com/vitorebatista)
 
+### Instalação
+Necessário ter [Pipenv](https://github.com/pypa/pipenv#installation) e executar:
+```shell
+$ pipenv install 
+```
+
+### Utilização
+
+```shell
+$ pipenv shell
+$ python main.py
+```
+
+### Ideia do algoritmo de Hierholzer
+
+A idéia básica do algoritmo de Hierholzer é uma construção passo-a-passo do ciclo Euleriano por meio da conexão de subciclos. O início se dá em um vértice qualquer e segue para um vértice adjacente ainda não visitado, repetindo esse procedimento até que se retorne ao nó inicial, o que produz um primeiro ciclo no grafo. Caso cubra todos as arestas, se trata do próprio ciclo Euleriano e o algoritmo pode ser finalizado, caso contrário seleciona, entre os vértices do atual ciclo, um que ainda possua uma aresta que leve para um vértice não visitado, permitindo que se monte um novo subciclo a partir do primeiro, que então são mesclados. Se o ciclo estendido incluir todas as arestas, o algoritmo estará concluído.
+
 ### Funções implementadas
 
 #### import_file
@@ -40,23 +57,6 @@ Realiza a montagem de um ciclo euleriano a partir de um vértice inicial, um cam
 ### Considerações
 
 A implementação utiliza uma classe para realizar o controle do grafo, sendo que vértices e arestas são definidos como objetos do tipo lista encadeada. O controle de visitas dos vértices e arestas está sendo realizada por meio de um array auxiliar de valores booleanos, sendo que quando se sabe o índice do vértice/aresta a se buscar o custo é relativamente pequeno, porém em muitos casos se faz necessário realizar a busca da posição do elemento por meio da função index() ou por meio de comparações sucessivas, o que acresce significativamente a complexidade de tempo do algoritmo. Para a melhoria da presente implementação se pode sugerir a substituição das listas encadeadas por alguma estrutura que permita acessos diretos com custo reduzido, tal como um hashmap, por exemplo.
-
-
-### Instalação
-Necessário ter [Pipenv](https://github.com/pypa/pipenv#installation) e executar:
-```shell
-$ pipenv install 
-```
-
-### Utilização
-
-```shell
-$ pipenv shell
-$ python main.py
-```
-
-### Ideia do algoritmo de Hierholzer
-A idéia básica do algoritmo de Hierholzer é uma construção passo-a-passo do ciclo Euleriano por meio da conexão de subciclos. O início se dá em um vértice qualquer e segue para um vértice adjacente ainda não visitado, repetindo esse procedimento até que se retorne ao nó inicial, o que produz um primeiro ciclo no grafo. Caso cubra todos as arestas, se trata do próprio ciclo Euleriano e o algoritmo pode ser finalizado, caso contrário seleciona, entre os vértices do atual ciclo, um que ainda possua uma aresta que leve para um vértice não visitado, permitindo que se monte um novo subciclo a partir do primeiro, que então são mesclados. Se o ciclo estendido incluir todas as arestas, o algoritmo estará concluído.
 
 ### Prints
 
